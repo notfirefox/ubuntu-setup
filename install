@@ -1,0 +1,47 @@
+#!/bin/sh
+
+# Missing packages:
+# bash-language-server (will be installed using npm)
+# lua-language-server
+# rust-analyzer (will be installed using rustup)
+install_apt_packages() {
+    sudo apt --assume-yes update
+    sudo apt --assume-yes install \
+        build-essential \
+        clangd \
+        cmake \
+        default-jre \
+        fd-find \
+        neovim \
+        npm \
+        ripgrep \
+        rustup \
+        shellcheck \
+        tree-sitter-cli \
+        yt-dlp
+}
+
+install_bash_lsp() {
+    npm config set prefix "$HOME/.local/"
+    npm install --global bash-language-server
+}
+
+install_rust_tools() {
+    rustup default stable
+    rustup component add clippy
+    rustup component add rustfmt
+    rustup component add rust-analyzer
+}
+
+fix_clang_format() {
+    cat > "$HOME/.clang-format" <<EOF
+---
+BasedOnStyle: LLVM
+IndentWidth: 4
+EOF
+}
+
+install_apt_packages
+install_bash_lsp
+install_rust_tools
+fix_clang_format
