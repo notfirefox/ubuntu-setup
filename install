@@ -1,0 +1,49 @@
+#!/bin/sh
+
+# Missing packages:
+# bash-language-server (will be installed using npm)
+# lua-language-server
+# rust-analyzer (will be installed using rustup)
+install_packages() {
+    sudo apt update
+    sudo apt install \
+        build-essential \
+        clangd \
+        cmake \
+        default-jre \
+        fd-find \
+        neovim \
+        ninja-build \
+        npm \
+        ripgrep \
+        rustup \
+        shellcheck \
+        tree-sitter-cli \
+        wl-clipboard \
+        yt-dlp
+}
+
+# TODO: Can we install the bash language server without sudo (locally)?
+install_bashlsp() {
+    sudo npm i -g bash-language-server
+}
+
+install_rusttools() {
+    rustup default stable
+    rustup component add clippy
+    rustup component add rustfmt
+    rustup component add rust-analyzer
+}
+
+fix_clang_formatting() {
+    cat > "$HOME/.clang-format" <<EOF
+---
+BasedOnStyle: LLVM
+IndentWidth: 4
+EOF
+}
+
+install_packages
+install_bashlsp
+install_rusttools
+fix_clang_formatting
