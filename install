@@ -5,15 +5,14 @@
 # lua-language-server
 # rust-analyzer (will be installed using rustup)
 install_packages() {
-    sudo apt update
-    sudo apt install \
+    sudo apt -y update
+    sudo apt -y install \
         build-essential \
         clangd \
         cmake \
         default-jre \
         fd-find \
         neovim \
-        ninja-build \
         npm \
         ripgrep \
         rustup \
