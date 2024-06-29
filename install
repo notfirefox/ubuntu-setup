@@ -18,7 +18,6 @@ install_packages() {
         rustup \
         shellcheck \
         tree-sitter-cli \
-        wl-clipboard \
         yt-dlp
 }
 
