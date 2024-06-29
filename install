@@ -21,9 +21,14 @@ install_packages() {
         yt-dlp
 }
 
-# TODO: Can we install the bash language server without sudo (locally)?
 install_bashlsp() {
-    sudo npm i -g bash-language-server
+    INSTALL_DIR="/tmp/bash-language-server"
+    npm --prefix "$INSTALL_DIR" install --global bash-language-server
+    sudo chown --recursive root:root "$INSTALL_DIR"
+    sudo mv "$INSTALL_DIR/bin/bash-language-server" "/usr/local/bin"
+    sudo mv "$INSTALL_DIR/lib/node_modules" "/usr/local/lib"
+    sudo rm --force --recursive "$INSTALL_DIR"
+    unset INSTALL_DIR
 }
 
 install_rusttools() {
