@@ -4,7 +4,7 @@
 # bash-language-server (will be installed using npm)
 # lua-language-server
 # rust-analyzer (will be installed using rustup)
-install_packages() {
+install_apt_packages() {
     sudo apt -y update
     sudo apt -y install \
         build-essential \
@@ -21,7 +21,7 @@ install_packages() {
         yt-dlp
 }
 
-install_bashlsp() {
+install_bash_lsp() {
     INSTALL_DIR="/tmp/bash-language-server"
     npm --prefix "$INSTALL_DIR" install --global bash-language-server
     sudo chown --recursive root:root "$INSTALL_DIR"
@@ -31,7 +31,7 @@ install_bashlsp() {
     unset INSTALL_DIR
 }
 
-install_rusttools() {
+install_rust_tools() {
     rustup default stable
     rustup component add clippy
     rustup component add rustfmt
@@ -46,7 +46,7 @@ IndentWidth: 4
 EOF
 }
 
-install_packages
-install_bashlsp
-install_rusttools
+install_apt_packages
+install_bash_lsp
+install_rust_tools
 fix_clang_formatting
