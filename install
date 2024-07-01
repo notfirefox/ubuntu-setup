@@ -1,9 +1,5 @@
 #!/bin/sh
 
-# Missing packages:
-# bash-language-server (will be installed using npm)
-# lua-language-server
-# rust-analyzer (will be installed using rustup)
 install_apt_packages() {
     sudo apt --assume-yes update
     sudo apt --assume-yes install \
@@ -12,6 +8,7 @@ install_apt_packages() {
         cmake \
         default-jre \
         fd-find \
+        jq \
         neovim \
         npm \
         ripgrep \
@@ -25,6 +22,21 @@ install_bash_lsp() {
     npm config set prefix "$HOME/.local/"
     npm install --global bash-language-server
 }
+
+install_lua_lsp() {(
+    REPO="LuaLS/lua-language-server"
+    VERSION=$(curl --silent \
+        "https://api.github.com/repos/$REPO/releases/latest" \
+        | jq --raw-output '.tag_name')
+    FILE="lua-language-server-$VERSION-linux-x64.tar.gz"
+    wget "https://github.com/$REPO/releases/download/$VERSION/$FILE"
+    INSTALL_DIR="$HOME/.local/share/luals"
+    mkdir --parents "$INSTALL_DIR"
+    tar xf "$FILE" --directory "$INSTALL_DIR"
+    rm --force "$FILE"
+    ln --symbolic "$INSTALL_DIR/bin/lua-language-server" \
+        "$HOME/.local/bin/lua-language-server"
+)}
 
 install_rust_tools() {
     rustup default stable
@@ -43,5 +55,6 @@ EOF
 
 install_apt_packages
 install_bash_lsp
+install_lua_lsp
 install_rust_tools
 fix_clang_format
