@@ -53,8 +53,15 @@ IndentWidth: 4
 EOF
 }
 
+clone_nvim_config() {
+    git clone "https://github.com/notfirefox/nvim-config.git" \
+        "$HOME/.config/nvim"
+    nvim --headless "+Lazy! sync" +qa
+}
+
 install_apt_packages
 install_bash_lsp
 install_lua_lsp
 install_rust_tools
 fix_clang_format
+clone_nvim_config
