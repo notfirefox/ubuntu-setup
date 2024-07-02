@@ -2,7 +2,7 @@
 Setup Script Based on [Ubuntu](https://ubuntu.com/)
 
 ## Installation
-Download the script using the following command.
+Use the following command to run the setup script.
 ```sh
 curl -s "https://raw.githubusercontent.com/notfirefox/ubuntu-setup/main/install" | sh
 ```
