@@ -1,5 +1,5 @@
 # Ubuntu Setup
-Setup Script Based on [Ubuntu](https://ubuntu.com/)
+Setup Script Based for [Ubuntu](https://ubuntu.com/)
 
 ## Installation
 Use the following command to run the setup script.
