@@ -1,67 +1,15 @@
 #!/bin/sh
 
-install_apt_packages() {
-    sudo apt --assume-yes update
-    sudo apt --assume-yes install \
-        build-essential \
-        clangd \
-        cmake \
-        default-jre \
-        fd-find \
-        jq \
-        neovim \
-        npm \
-        ripgrep \
-        rustup \
-        shellcheck \
-        tree-sitter-cli \
-        yt-dlp
-}
+# install required tools
+sudo apt --assume-yes update
+sudo apt --assume-yes install build-essential procps curl file git
 
-install_bash_lsp() {
-    npm config set prefix "$HOME/.local/"
-    npm install --global bash-language-server
-}
+# install homebrew
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-install_lua_lsp() {(
-    REPO="LuaLS/lua-language-server"
-    VERSION=$(curl --silent \
-        "https://api.github.com/repos/$REPO/releases/latest" \
-        | jq --raw-output '.tag_name')
-    FILE="lua-language-server-$VERSION-linux-x64.tar.gz"
-    wget "https://github.com/$REPO/releases/download/$VERSION/$FILE"
-    INSTALL_DIR="$HOME/.local/share/luals"
-    mkdir --parents "$INSTALL_DIR"
-    tar xf "$FILE" --directory "$INSTALL_DIR"
-    rm --force "$FILE"
-    ln --symbolic "$INSTALL_DIR/bin/lua-language-server" \
-        "$HOME/.local/bin/lua-language-server"
-)}
-
-install_rust_tools() {
-    rustup default stable
-    rustup component add clippy
-    rustup component add rustfmt
-    rustup component add rust-analyzer
-}
-
-fix_clang_format() {
-    cat > "$HOME/.clang-format" <<EOF
----
-BasedOnStyle: LLVM
-IndentWidth: 4
+# add homebrew to path
+cat <<EOF >> "$HOME/.bashrc" 
+if [ -e /home/linuxbrew/.linuxbrew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
 EOF
-}
-
-clone_nvim_config() {
-    git clone "https://github.com/notfirefox/nvim-config.git" \
-        "$HOME/.config/nvim"
-    nvim --headless "+Lazy! sync" +qa
-}
-
-install_apt_packages
-install_bash_lsp
-install_lua_lsp
-install_rust_tools
-fix_clang_format
-clone_nvim_config
