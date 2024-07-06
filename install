@@ -8,7 +8,7 @@ sudo apt --assume-yes install build-essential procps curl file git
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # add homebrew to path
-cat <<EOF >> "$HOME/.bashrc" 
+cat <<'EOF' >> "$HOME/.bashrc" 
 if [ -e /home/linuxbrew/.linuxbrew ]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
